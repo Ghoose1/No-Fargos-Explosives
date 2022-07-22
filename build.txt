@@ -1,0 +1,4 @@
+displayName = No Fargo's Explosives
+author = Ghoose
+version = 1.0
+modReferences = FargowiltasSouls@1.4

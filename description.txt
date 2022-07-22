@@ -1,0 +1,5 @@
+This mod un-trolls your fargos servers by disabling the items Galatic Reformer and Universal Collapse.
+They can be enabled via a config if needed.
+
+Version 1.0: I coded this mod in like 10 minutes
+	- Universal collapse and Galatic Reformer options added.
