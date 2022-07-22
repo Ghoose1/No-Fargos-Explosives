@@ -24,37 +24,26 @@ namespace FargoServer
         public bool GalacticReformDisable;
     }
 
-	public class GRDisable : GlobalItem
+	public class DisabledItem : GlobalItem
     {
         public override bool AppliesToEntity(Item entity, bool lateInstantiation)
         {
-            return entity.type == ModContent.ItemType<FargowiltasSouls.Items.Misc.GalacticReformer>();
+            return (entity.type == ModContent.ItemType<FargowiltasSouls.Items.Misc.GalacticReformer>() && 
+						ModContent.GetInstance<FargoServerConfig>().GalacticReformDisable && 
+						Main.netMode != Terraria.ID.NetmodeID.SinglePlayer) 
+					||
+				   (entity.type == ModContent.ItemType<FargowiltasSouls.Items.Misc.UniversalCollapse>() && 
+						ModContent.GetInstance<FargoServerConfig>().UniversalCollapseDisable && 
+						Main.netMode != Terraria.ID.NetmodeID.SinglePlayer);
         }
 
-        public override bool CanUseItem(Item item, Player player) => !ModContent.GetInstance<FargoServerConfig>().GalacticReformDisable || Main.netMode == Terraria.ID.NetmodeID.SinglePlayer;
+        public override bool CanUseItem(Item item, Player player) => false;
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             TooltipLine line = new TooltipLine(Mod, "disabled", "DISABLED FOR SERVER (no trolling)");
             line.OverrideColor = Color.Red;
-            if (CanUseItem(item, Main.LocalPlayer)) tooltips.Add(line);
-        }
-    }
-
-    public class UCDisable : GlobalItem
-    {
-        public override bool AppliesToEntity(Item entity, bool lateInstantiation)
-        {
-            return entity.type == ModContent.ItemType<FargowiltasSouls.Items.Misc.UniversalCollapse>();
-        }
-
-        public override bool CanUseItem(Item item, Player player) => !ModContent.GetInstance<FargoServerConfig>().UniversalCollapseDisable || Main.netMode == Terraria.ID.NetmodeID.SinglePlayer;
-
-        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
-        {
-            TooltipLine line = new TooltipLine(Mod, "disabled", "DISABLED FOR SERVER (no trolling)");
-            line.OverrideColor = Color.Red;
-            if (CanUseItem(item, Main.LocalPlayer)) tooltips.Add(line);
+            tooltips.Add(line);
         }
     }
 }
