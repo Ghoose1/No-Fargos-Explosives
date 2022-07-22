@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace FargoServer
+namespace NoFargosExplosives
 {
 	public class FargoServer : Mod
 	{
@@ -22,28 +22,113 @@ namespace FargoServer
 
         [DefaultValue(true)]
         public bool GalacticReformDisable;
+		
+		[DefaultValue(true)]
+        public bool SupremeRenewalDisable;
+		
+		[DefaultValue(true)]
+        public bool RenewalDisable;
     }
 
-	public class DisabledItem : GlobalItem
+	public class GRDisable : GlobalItem
     {
         public override bool AppliesToEntity(Item entity, bool lateInstantiation)
         {
-            return (entity.type == ModContent.ItemType<FargowiltasSouls.Items.Misc.GalacticReformer>() && 
-						ModContent.GetInstance<FargoServerConfig>().GalacticReformDisable && 
-						Main.netMode != Terraria.ID.NetmodeID.SinglePlayer) 
-					||
-				   (entity.type == ModContent.ItemType<FargowiltasSouls.Items.Misc.UniversalCollapse>() && 
-						ModContent.GetInstance<FargoServerConfig>().UniversalCollapseDisable && 
-						Main.netMode != Terraria.ID.NetmodeID.SinglePlayer);
+            return entity.type == ModContent.ItemType<FargowiltasSouls.Items.Misc.GalacticReformer>();
         }
 
-        public override bool CanUseItem(Item item, Player player) => false;
+        public override bool CanUseItem(Item item, Player player) => !ModContent.GetInstance<FargoServerConfig>().GalacticReformDisable;
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             TooltipLine line = new TooltipLine(Mod, "disabled", "DISABLED FOR SERVER (no trolling)");
             line.OverrideColor = Color.Red;
-            tooltips.Add(line);
+            if (!CanUseItem(item, Main.LocalPlayer)) tooltips.Add(line);
+        }
+    }
+
+    public class UCDisable : GlobalItem
+    {
+        public override bool AppliesToEntity(Item entity, bool lateInstantiation)
+        {
+            return entity.type == ModContent.ItemType<FargowiltasSouls.Items.Misc.UniversalCollapse>();
+        }
+
+        public override bool CanUseItem(Item item, Player player) => !ModContent.GetInstance<FargoServerConfig>().UniversalCollapseDisable;
+
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        {
+            TooltipLine line = new TooltipLine(Mod, "disabled", "DISABLED FOR SERVER (no trolling)");
+            line.OverrideColor = Color.Red;
+            if (!CanUseItem(item, Main.LocalPlayer)) tooltips.Add(line);
+        }
+    }
+	
+	/*public class SupremeDisable : GlobalItem
+    {
+        public override bool AppliesToEntity(Item entity, bool lateInstantiation)
+        {
+            return entity.type == ModContent.ItemType<Fargowiltas.Items.Renewals.BaseRenewalItem>();
+        }
+
+        public override bool CanUseItem(Item item, Player player) 
+		{
+			if (item.ModItem is Fargowiltas.Items.Renewals.BaseRenewalItem modItem)
+			{
+				if (modItem.supreme)
+					return ModContent.GetInstance<FargoServerConfig>().SupremeRenewalDisable;
+				else
+					return ModContent.GetInstance<FargoServerConfig>().RenewalDisable;
+			}
+		}
+
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        {
+            TooltipLine line = new TooltipLine(Mod, "disabled", "DISABLED FOR SERVER (no trolling)");
+            line.OverrideColor = Color.Red;
+            if (!CanUseItem(item, Main.LocalPlayer)) tooltips.Add(line);
+        }
+    }*/
+	
+	public class SupremeDisable : GlobalItem
+    {
+        public override bool AppliesToEntity(Item entity, bool lateInstantiation)
+        {
+            return entity.type == ModContent.ItemType<Fargowiltas.Items.Renewals.CorruptRenewalSupreme>() ||
+					entity.type == ModContent.ItemType<Fargowiltas.Items.Renewals.CrimsonRenewalSupreme>() ||
+					entity.type == ModContent.ItemType<Fargowiltas.Items.Renewals.HallowRenewalSupreme>() ||
+					entity.type == ModContent.ItemType<Fargowiltas.Items.Renewals.MushroomRenewalSupreme>() ||
+					entity.type == ModContent.ItemType<Fargowiltas.Items.Renewals.PurityRenewalSupreme>();
+        }
+
+        public override bool CanUseItem(Item item, Player player) => !ModContent.GetInstance<FargoServerConfig>().SupremeRenewalDisable;
+
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        {
+            TooltipLine line = new TooltipLine(Mod, "disabled", "DISABLED FOR SERVER (no trolling)");
+            line.OverrideColor = Color.Red;
+            if (!CanUseItem(item, Main.LocalPlayer)) tooltips.Add(line);
+        }
+    }
+	
+	public class RenewalDisable : GlobalItem
+    {
+        public override bool AppliesToEntity(Item entity, bool lateInstantiation)
+        {
+            return entity.type == ModContent.ItemType<Fargowiltas.Items.Renewals.CorruptRenewal>() ||
+					entity.type == ModContent.ItemType<Fargowiltas.Items.Renewals.CrimsonRenewal>() ||
+					entity.type == ModContent.ItemType<Fargowiltas.Items.Renewals.HallowRenewal>() ||
+					entity.type == ModContent.ItemType<Fargowiltas.Items.Renewals.MushroomRenewal>() ||
+					entity.type == ModContent.ItemType<Fargowiltas.Items.Renewals.PurityRenewal>();
+        }
+
+        public override bool CanUseItem(Item item, Player player) => !ModContent.GetInstance<FargoServerConfig>().RenewalDisable;
+
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        {
+            TooltipLine line = new TooltipLine(Mod, "disabled", "DISABLED FOR SERVER (no trolling)");
+            line.OverrideColor = Color.Red;
+            if (!CanUseItem(item, Main.LocalPlayer)) tooltips.Add(line);
         }
     }
 }
