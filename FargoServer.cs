@@ -34,7 +34,10 @@ namespace NoFargosExplosives
     {
         public override bool AppliesToEntity(Item entity, bool lateInstantiation)
         {
-            return entity.type == ModContent.ItemType<FargowiltasSouls.Items.Misc.GalacticReformer>();
+			Mod mod = ModLoader.GetMod("FargowiltasSouls");
+			if (mod != null)
+				return entity.type == ModContent.ItemType<FargowiltasSouls.Items.Misc.GalacticReformer>();
+			return false;
         }
 
         public override bool CanUseItem(Item item, Player player) => !ModContent.GetInstance<FargoServerConfig>().GalacticReformDisable;
@@ -51,7 +54,10 @@ namespace NoFargosExplosives
     {
         public override bool AppliesToEntity(Item entity, bool lateInstantiation)
         {
-            return entity.type == ModContent.ItemType<FargowiltasSouls.Items.Misc.UniversalCollapse>();
+			Mod mod = ModLoader.GetMod("FargowiltasSouls");
+			if (mod != null)
+				return entity.type == ModContent.ItemType<FargowiltasSouls.Items.Misc.UniversalCollapse>();
+			return false;
         }
 
         public override bool CanUseItem(Item item, Player player) => !ModContent.GetInstance<FargoServerConfig>().UniversalCollapseDisable;
